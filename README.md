@@ -1,4 +1,4 @@
-# Transactions Routine API
+# Transactions API
 
 This project is a simple API for managing customer transactions. It includes endpoints for creating accounts and transactions, and retrieving account information. The project is built using Java and Spring Boot.
 
@@ -13,15 +13,15 @@ This project is a simple API for managing customer transactions. It includes end
 ## Getting Started
 
 ### Prerequisites
-- Java 11 or higher
+- Java 17 or higher
 - Maven
-- Docker (optional, for bonus points)
+- Docker
 
 ### Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/transactions-routine.git
-    cd transactions-routine
+    git clone https://github.com/harsh2792/transaction-service.git
+    cd transactions-service
     ```
 
 2. Build the project:
@@ -38,47 +38,90 @@ This project is a simple API for managing customer transactions. It includes end
 To run the application using Docker:
 1. Build the Docker image:
     ```bash
-    docker build -t transactions-routine .
+    docker build -t transactions-demo .
     ```
 
 2. Run the Docker container:
     ```bash
-    docker run -p 8080:8080 transactions-routine
+    docker run -p 8080:8080 transactions-demo
     ```
 
 ## Endpoints
 
 ### Create an Account
-- **URL:** `/accounts`
+- **URL:** `/api/accounts/`
 - **Method:** `POST`
+- **Summary:** Account creation
+- **Description:** Register a new user with a password and email
 - **Request Body:**
     ```json
     {
-      "document_number": "12345678900"
+      "document_number": "12345678900",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "password123"
     }
     ```
 - **Response Body:**
     ```json
     {
       "account_id": 1,
-      "document_number": "12345678900"
+      "document_number": "12345678900",
+      "name": "John Doe",
+      "email": "john.doe@example.com"
     }
     ```
 
 ### Retrieve Account Information
-- **URL:** `/accounts/{accountId}`
+- **URL:** `/api/accounts/{accountId}`
 - **Method:** `GET`
+- **Summary:** Get account details
+- **Description:** Get account details based on account ID
+- **Parameters:**
+    - `accountId` (path parameter)
 - **Response Body:**
     ```json
     {
       "account_id": 1,
-      "document_number": "12345678900"
+      "document_number": "12345678900",
+      "name": "John Doe",
+      "email": "john.doe@example.com"
+    }
+    ```
+
+### Account Login
+- **URL:** `/api/accounts/login`
+- **Method:** `POST`
+- **Summary:** Account Login
+- **Description:** Login a user with a password and email
+- **Request Body:**
+    ```json
+    {
+      "email": "john.doe@example.com",
+      "password": "password123"
+    }
+    ```
+
+### Get Current Account
+- **URL:** `/api/accounts/me`
+- **Method:** `GET`
+- **Summary:** Get account details
+- **Description:** Get account details based on account ID
+- **Response Body:**
+    ```json
+    {
+      "account_id": 1,
+      "document_number": "12345678900",
+      "name": "John Doe",
+      "email": "john.doe@example.com"
     }
     ```
 
 ### Create a Transaction
-- **URL:** `/transactions`
+- **URL:** `/api/transactions/`
 - **Method:** `POST`
+- **Summary:** Create a transaction
+- **Description:** Create a new transaction for an account
 - **Request Body:**
     ```json
     {
@@ -86,6 +129,41 @@ To run the application using Docker:
       "operation_type_id": 4,
       "amount": 123.45
     }
+    ```
+- **Response Body:**
+    ```json
+    {
+      "transaction_id": 1,
+      "account_id": 1,
+      "operation_type_id": 4,
+      "amount": 123.45,
+      "event_date": "2024-09-01T14:00:34"
+    }
+    ```
+
+### Get Transactions
+- **URL:** `/api/transactions/`
+- **Method:** `GET`
+- **Summary:** Get transactions
+- **Description:** Retrieve all transactions
+- **Response Body:**
+    ```json
+    [
+      {
+        "transaction_id": 1,
+        "account_id": 1,
+        "operation_type_id": 4,
+        "amount": 123.45,
+        "event_date": "2024-09-01T14:00:34"
+      },
+      {
+        "transaction_id": 2,
+        "account_id": 1,
+        "operation_type_id": 1,
+        "amount": -50.0,
+        "event_date": "2024-09-01T14:00:34"
+      }
+    ]
     ```
 
 ## Unit Tests
@@ -116,9 +194,6 @@ http://localhost:8080/swagger-ui.html
 ## Security Configuration
 The application includes security configurations for authentication and authorization. Ensure you have the necessary credentials to access the endpoints.
 
-## Contact
-If you have any questions, feel free to reach out.
-
 ## Database Structure
 
 ```mermaid
@@ -147,3 +222,6 @@ erDiagram
     OPERATION_TYPE ||--o{ TRANSACTION : has
 
 ```
+
+## Contact
+If you have any questions, feel free to reach out.
