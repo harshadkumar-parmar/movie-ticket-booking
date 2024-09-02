@@ -182,7 +182,7 @@ To run the unit tests, use the following command:
 mvn jococo:report
 ```
 
-![alt text](https://github.com/harsh2792/transaction-service/blob/master/images/transaction-report.png?raw=true)
+![jococo report](https://github.com/harsh2792/transaction-service/blob/master/images/transaction-report.png?raw=true)
 
 ## Swagger API Documentation
 
@@ -196,10 +196,7 @@ http://localhost:8080/swagger-ui.html
 
 ```
 
-![alt text](https://github.com/harsh2792/transaction-service/blob/master/images/swagger-ui.png?raw=true)
-
-
-/swagger-ui.html
+![Swagger UI](https://github.com/harsh2792/transaction-service/blob/master/images/swagger-ui.png?raw=true)
 
 ## Security Configuration
 The application includes security configurations for authentication and authorization. Ensure you have the necessary credentials to access the endpoints.
