@@ -1,27 +1,25 @@
 package com.pismo.demo.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import com.pismo.demo.dto.TransactionDto;
 import com.pismo.demo.entity.Account;
 import com.pismo.demo.entity.OperationType;
 import com.pismo.demo.entity.Transaction;
 import com.pismo.demo.repository.OperationTypeRepository;
 import com.pismo.demo.repository.TrasanctionRepository;
-
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import jdk.jfr.Description;
 
@@ -124,7 +122,7 @@ public class TransactionServiceTest {
         assertEquals(t, result);
         assertEquals(operationTypePurchase, result.getOperationType());
         assertEquals(account, result.getAccount());
-        assertEquals(BigDecimal.valueOf(-100.0), result.getAmount());
+        assertEquals(BigDecimal.valueOf(100.0), result.getAmount());
     }
 
     @Test

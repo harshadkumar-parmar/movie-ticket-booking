@@ -173,7 +173,13 @@ Unit tests are essential to ensure that your application behaves as expected. In
 ### Running Unit Tests
 To run the unit tests, use the following command:
 ```bash
-mvn test
+mvn clean test
+```
+
+### Running Unit Tests
+To run the unit tests, use the following command:
+```bash
+mvn jococo:report
 ```
 
 ## Swagger API Documentation

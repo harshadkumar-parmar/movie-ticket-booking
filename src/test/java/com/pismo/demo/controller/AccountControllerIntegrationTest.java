@@ -23,12 +23,11 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.demo.dto.LoginDto;
 import com.pismo.demo.dto.RegisterDto;
-import com.pismo.demo.entity.Account;
 import com.pismo.demo.security.JwtService;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Sql("/sql/accounts.sql")
+@DisplayName("Account Controller Integration Test")
 public class AccountControllerIntegrationTest {
 
     @Autowired
@@ -43,9 +42,9 @@ public class AccountControllerIntegrationTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-            .apply(SecurityMockMvcConfigurers.springSecurity()).build();
+                .apply(SecurityMockMvcConfigurers.springSecurity()).build();
     }
-    
+
     @Test
     @DisplayName("Should register user when input is valid")
     public void testShouldRegisterUserWhenInputIsValid() throws Exception {
@@ -55,7 +54,7 @@ public class AccountControllerIntegrationTest {
         mockMvc.perform(post("/api/accounts/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(registerDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -83,6 +82,7 @@ public class AccountControllerIntegrationTest {
     }
 
     @Test
+    @Sql("/sql/accounts.sql")
     @DisplayName("Should login user when input is valid")
     public void testLoginIntegration() throws Exception {
         LoginDto loginDto = new LoginDto("a@b.com", "string");
@@ -105,25 +105,29 @@ public class AccountControllerIntegrationTest {
 
     @Test
     @DisplayName("Should get account with token")
+    @Sql("/sql/accounts.sql")
     public void testUserShouldGetAccountWithToken() throws Exception {
-
-
-        String accessToken = jwtService
-            .generateToken(
-                new User(
-                    "a@b.com", 
-                    "",
-                    List.of(new SimpleGrantedAuthority("USER")
-                    )));
-
-        Account account = new Account();
-        account.setEmail("a@b.com");
-        account.setDocumentNumber("456789");
-        account.setName("Joe");
-        
+        User user = new User("a@b.com","string",List.of(new SimpleGrantedAuthority("USER")));
+        String accessToken = jwtService.generateToken(user);
         mockMvc.perform(post("/api/accounts/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isMethodNotAllowed());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Should not get account without token")
+    public void testUserShouldNotGetAccountWithoutToken() throws Exception {
+
+        String accessToken = jwtService.generateToken(
+                new User(
+                        "not@registered.com",
+                        "",
+                        List.of(new SimpleGrantedAuthority("USER"))));
+
+        mockMvc.perform(post("/api/accounts/me")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

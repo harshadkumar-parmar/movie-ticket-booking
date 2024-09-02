@@ -70,7 +70,7 @@ public class AccountController {
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDto registerDto) {
         try {
             accountService.createAccount(registerDto);
-            return new ResponseEntity<>("Account created successfully.", HttpStatus.OK);
+            return new ResponseEntity<>("Account created successfully.", HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -114,6 +114,6 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        } 
+        }
     }
 }

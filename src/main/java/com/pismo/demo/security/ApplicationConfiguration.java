@@ -31,9 +31,7 @@ public class ApplicationConfiguration {
   @Bean
   UserDetailsService userDetailsService() {
     return username -> {
-      System.out.println("----"+username +"==="+accountRepository.count());
-      accountRepository.findAll().forEach(action -> System.out.println(action.getEmail()));
-    Account account = accountRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Account account = accountRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
       Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
       grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
       return new User(account.getEmail(), account.getPassword(), true, true, true, true, grantedAuthorities );
