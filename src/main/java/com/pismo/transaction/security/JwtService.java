@@ -61,6 +61,12 @@ public class JwtService {
     return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
   }
 
+  /**
+   * Checks if the given JWT token has expired.
+   *
+   * @param token the JWT token to check
+   * @return true if the token has expired, false otherwise
+   */
   private boolean isTokenExpired(String token) {
     return extractExpiration(token).before(new Date());
   }

@@ -38,12 +38,12 @@ This project is a simple API for managing customer transactions. It includes end
 To run the application using Docker:
 1. Build the Docker image:
     ```bash
-    docker build -t transactions-demo .
+    docker build -t transactions-transaction .
     ```
 
 2. Run the Docker container:
     ```bash
-    docker run -p 8080:8080 transactions-demo
+    docker run -p 8080:8080 transactions-transaction
     ```
 
 ## Endpoints
@@ -181,6 +181,8 @@ To run the unit tests, use the following command:
 ```bash
 mvn jococo:report
 ```
+
+![alt text](https://github.com/harsh2792/transaction-service/blob/master/images/transaction-report.png?raw=true)
 
 ## Swagger API Documentation
 

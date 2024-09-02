@@ -21,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.pismo.transaction.dto.LoginDto;
 import com.pismo.transaction.dto.RegisterDto;
+import com.pismo.transaction.exception.ResourceNotFoundException;
 import com.pismo.transaction.security.JwtService;
 
 @SpringBootTest
@@ -71,9 +71,9 @@ public class AccountServiceTest {
     @Description("Should return null when get account by id not found")
     public void shouldReturnNullWhenGetAccountByIdNotFound() {
         when(accountRepository.findById(anyLong())).thenReturn(Optional.empty());
-        Exception exception = assertThrows(NotFoundException.class,
+        Exception exception = assertThrows(ResourceNotFoundException.class,
                 () -> accountService.getAccount(1L));
-        assertNull(exception.getMessage());
+        assertEquals("Account not found", exception.getMessage());
     }
 
     @Test

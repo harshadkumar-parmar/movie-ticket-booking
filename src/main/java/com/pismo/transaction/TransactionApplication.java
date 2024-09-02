@@ -1,7 +1,6 @@
 package com.pismo.transaction;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -9,11 +8,13 @@ import org.springframework.context.annotation.Bean;
 import com.pismo.transaction.entity.OperationType;
 import com.pismo.transaction.repository.OperationTypeRepository;
 
+import lombok.AllArgsConstructor;
+
 @SpringBootApplication
+@AllArgsConstructor
 public class TransactionApplication {
 
-	@Autowired
-	private OperationTypeRepository operationTypeRepository;
+	private final OperationTypeRepository operationTypeRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TransactionApplication.class, args);

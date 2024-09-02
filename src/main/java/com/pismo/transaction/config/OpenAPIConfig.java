@@ -13,6 +13,23 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class OpenAPIConfig {
 
+    private final static String TRANSACTION_DESCRIPTION = """
+                
+                API for Transaction Management
+
+                operationTypeId:
+
+                
+                | Operation                  | Value | Type   |
+                |----------------------------|-------|--------|
+                | Normal Purchase            | 1     | Debit  |
+                | Purchase with installments | 2     | Debit  |
+                | Withdrawal                 | 3     | Debit  |
+                | Credit Voucher             | 4     | Credit |
+
+
+            """;
+
     @Bean
     public OpenAPI myOpenAPI() {
 
@@ -34,9 +51,9 @@ public class OpenAPIConfig {
 
         Info info = new Info()
                 .title("Transaction Management API")
-                .version("1.0")
+                .version("1.0.0")
                 .contact(contact)
-                .description("API for Transaction Management");
+                .description(TRANSACTION_DESCRIPTION);
         openApi.setInfo(info);
         openApi.addSecurityItem(new SecurityRequirement().addList(securitySchemeName));
         openApi.components(new Components().addSecuritySchemes(securitySchemeName, securityScheme));

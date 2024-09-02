@@ -2,7 +2,6 @@ package com.pismo.transaction.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,39 +18,40 @@ import com.pismo.transaction.dto.TransactionDto;
 import com.pismo.transaction.entity.Transaction;
 import com.pismo.transaction.service.TransactionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/transactions")
 @Tag(name = "Transaction", description = "Transaction Management API")
+@AllArgsConstructor
 public class TransactionController {
-    @Autowired
-    private TransactionService transactionService;
 
+    private final TransactionService transactionService;
+
+    @Operation(summary = "Create Transaction", description = "API to create transaction", responses = {
+            @ApiResponse(responseCode = "201", description = "Transaction created successfully", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")
+    })
     @PostMapping("/")
     @ExceptionHandler(MethodValidationException.class)
-    public ResponseEntity<Transaction> createTransaction(@CurrentSecurityContext(expression = "authentication") 
-  Authentication authentication, @Valid @RequestBody TransactionDto transaction) {
-        try {
-            Transaction savedTransaction = transactionService.createTransaction(transaction, authentication.getName() );
-            return new ResponseEntity<>(savedTransaction, HttpStatus.CREATED);
-         }catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);   
-        } 
+    public ResponseEntity<Transaction> createTransaction(
+            @CurrentSecurityContext(expression = "authentication") Authentication authentication,
+            @Valid @RequestBody TransactionDto transaction) {
+        Transaction savedTransaction = transactionService.createTransaction(transaction, authentication.getName());
+        return new ResponseEntity<>(savedTransaction, HttpStatus.CREATED);
     }
 
     @GetMapping("/")
     @ExceptionHandler(MethodValidationException.class)
-    public ResponseEntity<List<Transaction>> getTransactions(@CurrentSecurityContext(expression = "authentication") 
-  Authentication authentication) {
-        try {
-            List<Transaction> transactions = transactionService.getTransactions(authentication.getName());
-            return new ResponseEntity<>(transactions, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);   
-        } 
+    public ResponseEntity<List<Transaction>> getTransactions(
+            @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+        List<Transaction> transactions = transactionService.getTransactions(authentication.getName());
+        return new ResponseEntity<>(transactions, HttpStatus.CREATED);
     }
 }

@@ -11,10 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +32,7 @@ import com.pismo.transaction.security.JwtService;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @DisplayName("Account Controller Integration Test")
 public class AccountControllerIntegrationTest {
 
@@ -48,8 +54,7 @@ public class AccountControllerIntegrationTest {
     @Test
     @DisplayName("Should register user when input is valid")
     public void testShouldRegisterUserWhenInputIsValid() throws Exception {
-
-        RegisterDto registerDto = new RegisterDto("joe", "user@example.com", "password", "1234567890");
+        RegisterDto registerDto = new RegisterDto("joe", "user@example.com", "password", "123");
 
         mockMvc.perform(post("/api/accounts/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +66,7 @@ public class AccountControllerIntegrationTest {
     @DisplayName("Should not register user when email is not valid")
     public void testShouldNotRegisterUserWhenEmailNotValid() throws Exception {
 
-        RegisterDto registerDto = new RegisterDto("joe", "invalidmail", "password", "1234567890");
+        RegisterDto registerDto = new RegisterDto("joe", "invalidmail", "password", "123");
 
         mockMvc.perform(post("/api/accounts/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,12 +109,13 @@ public class AccountControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Should get account with token")
     @Sql("/sql/accounts.sql")
+    @DisplayName("Should get account with token")
+    @WithMockUser(username = "a@b.com", authorities = { "USER" })
     public void testUserShouldGetAccountWithToken() throws Exception {
-        User user = new User("a@b.com","string",List.of(new SimpleGrantedAuthority("USER")));
+        User user = new User("a@b.com", "string", List.of(new SimpleGrantedAuthority("USER")));
         String accessToken = jwtService.generateToken(user);
-        mockMvc.perform(post("/api/accounts/me")
+        mockMvc.perform(get("/api/accounts/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -119,15 +125,8 @@ public class AccountControllerIntegrationTest {
     @DisplayName("Should not get account without token")
     public void testUserShouldNotGetAccountWithoutToken() throws Exception {
 
-        String accessToken = jwtService.generateToken(
-                new User(
-                        "not@registered.com",
-                        "",
-                        List.of(new SimpleGrantedAuthority("USER"))));
-
-        mockMvc.perform(post("/api/accounts/me")
-                .header("Authorization", "Bearer " + accessToken)
+        mockMvc.perform(get("/api/accounts/me")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isForbidden());
     }
 }

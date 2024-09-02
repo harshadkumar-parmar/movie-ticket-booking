@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pismo.transaction.dto.TransactionDto;
@@ -17,17 +16,15 @@ import com.pismo.transaction.repository.TrasanctionRepository;
 
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private OperationTypeRepository operationTypeRepository;
-
-    @Autowired
-    private TrasanctionRepository transactionRepository;
+    
+    private final AccountService accountService;
+    private final OperationTypeRepository operationTypeRepository;
+    private final TrasanctionRepository transactionRepository;
 
     /**
      * Creates a new transaction
