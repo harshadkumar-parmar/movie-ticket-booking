@@ -24,7 +24,7 @@ public class OperationType {
     private String description;
 
     @NotNull
-    @Column(nullable = false, name = "is_negative", columnDefinition = "to make the operation amount negative")
+    @Column(nullable = false, name = "is_negative")
     private boolean isNegative;
     
     @JsonIgnore

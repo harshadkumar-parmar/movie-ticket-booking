@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,7 +57,6 @@ public class AccountService {
         user.setName(signUpDto.getName());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         user.setDocumentNumber(signUpDto.getDocumentNumber());
-
         return accountRepository.save(user);
     }
 
@@ -70,14 +70,29 @@ public class AccountService {
         return accountRepository.findById(accountId).orElseThrow(() -> new NotFoundException());
     }
 
+
+    /**
+     * Logs in a user and returns a JWT token
+     * @param loginDto the login credentials
+     * @return the JWT token
+     * @throws BadCredentialsException if the credentials are invalid
+     */
     public String login(LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+        System.out.println("-----------------------");
+        AbstractAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         Set <GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority("USER"));
         return jwtService.generateToken(new User(loginDto.getEmail(), loginDto.getPassword(), roles));
     }
 
+    /**
+     * Retrieves an account by email
+     * @param email the email of the account
+     * @return the account with the given email
+     * @throws NoSuchElementException if the account is not found
+     */
     public Account geAccountByEmail(String email) {
         return accountRepository.findByEmail(email).orElseThrow();
     }

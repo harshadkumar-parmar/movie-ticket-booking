@@ -1,0 +1,11 @@
+{
+    "preferred_username": "standrad_user",
+    "scope": "profile email",
+    "email": "standrad_user@machin.truc",
+    "email_verified": false,
+    "realm_access": {
+      "roles": [
+        "USER"
+      ]
+    }
+  }

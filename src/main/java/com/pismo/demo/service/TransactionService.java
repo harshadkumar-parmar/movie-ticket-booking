@@ -12,7 +12,6 @@ import com.pismo.demo.dto.TransactionDto;
 import com.pismo.demo.entity.Account;
 import com.pismo.demo.entity.OperationType;
 import com.pismo.demo.entity.Transaction;
-import com.pismo.demo.repository.AccountRepository;
 import com.pismo.demo.repository.OperationTypeRepository;
 import com.pismo.demo.repository.TrasanctionRepository;
 
@@ -22,7 +21,7 @@ import jakarta.transaction.Transactional.TxType;
 @Service
 public class TransactionService {
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
     private OperationTypeRepository operationTypeRepository;
@@ -32,12 +31,14 @@ public class TransactionService {
 
     /**
      * Creates a new transaction
-     * @param transaction the transaction to create
+     * @param TransactionDto the transaction to create
+     * @param email the email of the account that the transaction belongs to
      * @return the created transaction
+     * @throws RuntimeException if the operation type is not found
      */
     @Transactional(TxType.REQUIRED)
     public Transaction createTransaction(TransactionDto transaction, String email) {
-        Account account = accountRepository.findByEmail(email).orElseThrow();
+        Account account = accountService.geAccountByEmail(email);
         Optional<OperationType> operationTypeOptional = operationTypeRepository.findById(transaction.getOperationTypeId());
         if(operationTypeOptional.isEmpty()) {
             throw new RuntimeException("Operation type not found");
@@ -55,8 +56,13 @@ public class TransactionService {
         return transactionRepository.save(t);
     }
 
+    /**
+     * Retrieves all transactions of a given account
+     * @param email the email of the account
+     * @return a list of transactions
+     */
     public List<Transaction> getTransactions(String email) {
-        Account account = accountRepository.findByEmail(email).orElseThrow();
+        Account account = accountService.geAccountByEmail(email);
         return transactionRepository.findByAccount(account);
     }
 }

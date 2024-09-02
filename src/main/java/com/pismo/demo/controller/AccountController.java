@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +50,9 @@ public class AccountController {
             logger.trace("in login");
             String token = accountService.login(account);
             return new ResponseEntity<>(token, HttpStatus.OK);
+        } catch( BadCredentialsException e ){
+            logger.error("Invalid credentials");
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Error on login", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

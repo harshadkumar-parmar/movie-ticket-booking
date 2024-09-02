@@ -26,7 +26,7 @@ public class DemoApplication {
 	 *         has been loaded.
 	 */
 	@Bean
-	InitializingBean sendDatabase() {
+	InitializingBean seedOperationType() {
 		return () -> {
 			OperationType purchase = new OperationType();
 			purchase.setOperationTypeId((short) 1);
