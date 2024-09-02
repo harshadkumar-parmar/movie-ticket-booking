@@ -1,7 +1,5 @@
 package com.pismo.transaction.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +22,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/accounts")
 @Tag(name = "Account", description = "Account Management API")
+@Slf4j
 public class AccountController {
-
-    Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     private AccountService accountService;
@@ -42,7 +40,7 @@ public class AccountController {
     })
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginDto account) {
-        logger.trace("in login");
+        log.trace("Login request received for email: {}", account.getEmail());
         String token = accountService.login(account);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
@@ -55,6 +53,7 @@ public class AccountController {
     })
     @PostMapping("/")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterDto registerDto) {
+        log.trace("Register request received for email: {}", registerDto.getEmail());
         accountService.createAccount(registerDto);
         return new ResponseEntity<>("Account created successfully.", HttpStatus.CREATED);
     }
@@ -66,6 +65,7 @@ public class AccountController {
     })
     @GetMapping("/{accountId}")
     public ResponseEntity<Account> getAccount(@PathVariable Long accountId) throws Exception {
+        log.trace("Get account request received for account id: {}", accountId);
         Account account = accountService.getAccount(accountId);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
@@ -78,9 +78,9 @@ public class AccountController {
     @GetMapping("/me")
     public ResponseEntity<Account> getCurrentAccount(
             @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
-                System.out.println("in.2...");
+
+        log.trace("Get account request received for email: {}", authentication.getName());
         Account account = accountService.geAccountByEmail(authentication.getName());
-        System.out.println("in...2.");
 
         return new ResponseEntity<>(account, HttpStatus.OK);
     }

@@ -16,6 +16,7 @@ public class TransactionApplication {
 
 	private final OperationTypeRepository operationTypeRepository;
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(TransactionApplication.class, args);
 	}

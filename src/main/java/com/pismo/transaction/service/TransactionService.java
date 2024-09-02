@@ -17,9 +17,11 @@ import com.pismo.transaction.repository.TrasanctionRepository;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TransactionService {
     
     private final AccountService accountService;
@@ -35,9 +37,14 @@ public class TransactionService {
      */
     @Transactional(TxType.REQUIRED)
     public Transaction createTransaction(TransactionDto transaction, String email) {
+        log.info("Creating transaction for email: {} with transaction: {}", email, transaction);
         Account account = accountService.geAccountByEmail(email);
+
+        // check if operation type exists
         Optional<OperationType> operationTypeOptional = operationTypeRepository.findById(transaction.getOperationTypeId());
+        log.info("Operation type: {}", operationTypeOptional);
         if(operationTypeOptional.isEmpty()) {
+            log.error("Operation type not found");
             throw new RuntimeException("Operation type not found");
         }
         OperationType operationType = operationTypeOptional.get();
@@ -50,6 +57,7 @@ public class TransactionService {
             amount = amount.negate();
         }
         t.setAmount(amount);
+        log.info("Transaction created: {}", t);
         return transactionRepository.save(t);
     }
 
@@ -59,7 +67,9 @@ public class TransactionService {
      * @return a list of transactions
      */
     public List<Transaction> getTransactions(String email) {
+        log.info("Fetching transactions for email: {}", email);
         Account account = accountService.geAccountByEmail(email);
+        log.info("Fetching transactions for account: {}", account);
         return transactionRepository.findByAccount(account);
     }
 }

@@ -196,6 +196,8 @@ http://localhost:8080/swagger-ui.html
 
 ```
 
+![alt text](https://github.com/harsh2792/transaction-service/blob/master/images/swagger-ui.png?raw=true)
+
 
 /swagger-ui.html
 

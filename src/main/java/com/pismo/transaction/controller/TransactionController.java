@@ -2,6 +2,8 @@ package com.pismo.transaction.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,13 +26,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/transactions")
 @Tag(name = "Transaction", description = "Transaction Management API")
 @AllArgsConstructor
+@Slf4j
 public class TransactionController {
-
+    
     private final TransactionService transactionService;
 
     @Operation(summary = "Create Transaction", description = "API to create transaction", responses = {
@@ -43,6 +47,7 @@ public class TransactionController {
     public ResponseEntity<Transaction> createTransaction(
             @CurrentSecurityContext(expression = "authentication") Authentication authentication,
             @Valid @RequestBody TransactionDto transaction) {
+        log.trace("Create transaction request received for email: {} with transaction: {}", authentication.getName(), transaction);
         Transaction savedTransaction = transactionService.createTransaction(transaction, authentication.getName());
         return new ResponseEntity<>(savedTransaction, HttpStatus.CREATED);
     }
@@ -51,6 +56,7 @@ public class TransactionController {
     @ExceptionHandler(MethodValidationException.class)
     public ResponseEntity<List<Transaction>> getTransactions(
             @CurrentSecurityContext(expression = "authentication") Authentication authentication) {
+        log.trace("Get account request received for email: {}", authentication.getName());
         List<Transaction> transactions = transactionService.getTransactions(authentication.getName());
         return new ResponseEntity<>(transactions, HttpStatus.CREATED);
     }
