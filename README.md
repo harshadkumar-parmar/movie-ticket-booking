@@ -9,6 +9,7 @@ This project is a simple API for managing customer transactions. It includes end
 - Swagger API Documentation
 - Security Configuration
 - Database Structure
+- Depedency Report
 
 ## Getting Started
 
@@ -263,6 +264,16 @@ erDiagram
     OPERATION_TYPE ||--o{ TRANSACTION : has
 
 ```
+
+## Depedency Report
+
+Use the following Maven command to generate the report:
+```bash
+mvn dependency-check:check
+
+```
+the OWASP Dependency-Check report
+![Owasp Depedenct Report](https://github.com/harsh2792/transaction-service/blob/master/images/owasp-depedency-check-report.png?raw=true)
 
 ## Contact
 If you have any questions, feel free to reach out.
