@@ -30,4 +30,4 @@ RUN mvn clean package
 EXPOSE 8080
 
 # Run the application when the container starts
-CMD ["java", "-jar", "target/transaction-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/transaction-0.0.1-SNAPSHOT.jar", "-Dloader.main=com.pismo.transaction.TransactionApplication"]

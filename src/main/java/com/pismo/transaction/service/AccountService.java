@@ -43,7 +43,7 @@ public class AccountService {
      * @return the created account
      */
     public Account createAccount(@RequestBody RegisterDto signUpDto) {
-        log.info("Creating user {}", signUpDto.getEmail());
+        log.trace("Creating user {}", signUpDto.getEmail());
         // add check for username exists in a DB
         if (accountRepository.existsByEmail(signUpDto.getEmail())) {
             throw new RuntimeException("Email is already taken!");
@@ -66,7 +66,7 @@ public class AccountService {
      * @throws ResourceNotFoundException if the account is not found
      */
     public Account getAccount(@PathVariable Long accountId) throws ResourceNotFoundException  {
-        log.info("Fetching account by id: {}", accountId);
+        log.trace("Fetching account by id: {}", accountId);
         return accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
     }
 
@@ -78,7 +78,7 @@ public class AccountService {
      * @throws BadCredentialsException if the credentials are invalid
      */
     public String login(LoginDto loginDto) {
-        log.info("Logging in user {}", loginDto.getEmail());
+        log.trace("Logging in user {}", loginDto.getEmail());
         AbstractAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 loginDto.getEmail(),
                 loginDto.getPassword());
@@ -97,7 +97,7 @@ public class AccountService {
      * @throws NoSuchElementException if the account is not found
      */
     public Account geAccountByEmail(String email) {
-        log.info("Fetching account by email: {}", email);
+        log.trace("Fetching account by email: {}", email);
         return accountRepository.findByEmail(email).orElseThrow();
     }
 }

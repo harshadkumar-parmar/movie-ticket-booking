@@ -18,9 +18,11 @@ import com.pismo.transaction.exception.ResourceNotFoundException;
 import com.pismo.transaction.repository.AccountRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
 @AllArgsConstructor
+@Slf4j
 public class ApplicationConfiguration {
 
   private final AccountRepository accountRepository;
@@ -28,10 +30,7 @@ public class ApplicationConfiguration {
   @Bean
   UserDetailsService userDetailsService() {
     return username -> {
-      System.out.println("------------------------------------");
-      System.out.println("username: " + username);
-      accountRepository.findAll().forEach(t-> System.out.println(t.getAccountId()+"======"+t.getPassword()+"--"+t.getEmail()));
-      System.out.println("I got"+ accountRepository.findByEmail(username).get().getEmail());
+      log.trace("User details service called with username: {}", username);
       Account account = accountRepository.findByEmail(username)
           .orElseThrow(() -> new ResourceNotFoundException("User not found"));
       return new User(
@@ -45,18 +44,20 @@ public class ApplicationConfiguration {
 
   @Bean
   BCryptPasswordEncoder passwordEncoder() {
+    log.trace("Password encoder called");
     return new BCryptPasswordEncoder();
   }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    log.trace("Authentication manager called");
     return config.getAuthenticationManager();
   }
 
   @Bean
   AuthenticationProvider authenticationProvider() {
+    log.trace("Authentication provider called");
     DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
     authProvider.setUserDetailsService(userDetailsService());
     authProvider.setPasswordEncoder(passwordEncoder());
 

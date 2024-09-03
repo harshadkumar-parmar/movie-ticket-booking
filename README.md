@@ -17,34 +17,64 @@ This project is a simple API for managing customer transactions. It includes end
 - Maven
 - Docker
 
-### Installation
-1. Clone the repository:
+### Run in local with postgresql
+1. <b>Clone the repository </b>:
     ```bash
     git clone https://github.com/harsh2792/transaction-service.git
     cd transactions-service
     ```
 
-2. Build the project:
+2. <b>Make Scripts Executable</b>: Ensure the run.sh and run-test.sh scripts have execute permissions:
     ```bash
-    mvn clean install
+    chmod +x run.sh
+    chmod +x run-test.sh
     ```
+3. <b> Modify Application Properties </b>: Update the application.properties file.:
+    ```bash
+          # JWT Configuration
+          security.jwt.secret-key=<your-secret-key>
+          security.jwt.expiration-time=86400000
 
-3. Run the application:
+          # Database Configuration
+          spring.datasource.url=jdbc:postgresql://localhost:5432/<db-name>
+          spring.datasource.username=<your-username>
+          spring.datasource.password=<your-password>
+          spring.jpa.hibernate.ddl-auto=update
+          spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+    ```
+4. <b> Run the application </b>: Application can be run from mvn or shell script as below: 
     ```bash
     mvn spring-boot:run
     ```
-
-### Docker
-To run the application using Docker:
-1. Build the Docker image:
-    ```bash
-    docker build -t transactions-transaction .
+    or 
+     ```bash
+    sh run.sh
     ```
 
-2. Run the Docker container:
+### Run application with Docker compose
+
+1. <b>Clone the repository </b>:
     ```bash
-    docker run -p 8080:8080 transactions-transaction
+    git clone https://github.com/harsh2792/transaction-service.git
+    cd transactions-service
     ```
+2. <b>Build the Docker Images</b>: Build the Docker images using the following command:
+```bash
+docker-compose build
+```
+
+3. <b>Verify the Services</b>: Verify that the services are running correctly by checking the logs:
+
+```bash
+docker-compose logs
+```
+
+4. <b>Stop the Services</b>: Stop the services using the following command:
+
+```bash
+docker-compose down
+```
 
 ## Endpoints
 
@@ -176,13 +206,20 @@ To run the unit tests, use the following command:
 mvn clean test
 ```
 
-### Running Unit Tests
+### Generate test report
 To run the unit tests, use the following command:
 ```bash
 mvn jococo:report
 ```
 
+or can use run-test.sh file to test and generate reports
+
+```bash
+sh ./run-test.sh
+```
+
 ![jococo report](https://github.com/harsh2792/transaction-service/blob/master/images/transaction-report.png?raw=true)
+
 
 ## Swagger API Documentation
 
