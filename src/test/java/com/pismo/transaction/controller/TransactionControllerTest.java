@@ -1,33 +1,35 @@
 package com.pismo.transaction.controller;
 
 
-import com.pismo.transaction.dto.TransactionDto;
-import com.pismo.transaction.entity.Account;
-import com.pismo.transaction.entity.Transaction;
-import com.pismo.transaction.service.TransactionService;
-
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ActiveProfiles;
 
+import com.pismo.transaction.dto.TransactionDto;
+import com.pismo.transaction.entity.Account;
 import com.pismo.transaction.entity.OperationType;
+import com.pismo.transaction.entity.Transaction;
+import com.pismo.transaction.service.TransactionService;
+
+import jdk.jfr.Description;
 
 @SpringBootTest
+@Description("Tests for TransactionController")
+@ActiveProfiles("test")
 public class TransactionControllerTest {
 
     @Mock

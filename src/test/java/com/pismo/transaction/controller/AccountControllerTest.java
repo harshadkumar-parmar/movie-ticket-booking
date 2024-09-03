@@ -2,7 +2,6 @@ package com.pismo.transaction.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +12,7 @@ import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.pismo.transaction.dto.LoginDto;
 import com.pismo.transaction.dto.RegisterDto;
@@ -22,6 +22,8 @@ import com.pismo.transaction.service.AccountService;
 
 
 @SpringBootTest
+@Description("Tests for AccountController")
+@ActiveProfiles("test")
 public class AccountControllerTest {
 
     @Mock

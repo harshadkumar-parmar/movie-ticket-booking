@@ -12,9 +12,12 @@ import org.springframework.test.context.ActiveProfiles;
 
 import com.pismo.transaction.repository.OperationTypeRepository;
 
+import jdk.jfr.Description;
+
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
+@Description("Tests for TransactionApplication")
 public class TransactionApplicationTest {
 
     @Mock

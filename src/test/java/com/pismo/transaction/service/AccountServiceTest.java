@@ -1,16 +1,5 @@
 package com.pismo.transaction.service;
 
-import com.pismo.transaction.entity.Account;
-import com.pismo.transaction.repository.AccountRepository;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Description;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -18,18 +7,30 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.when;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.pismo.transaction.dto.LoginDto;
 import com.pismo.transaction.dto.RegisterDto;
+import com.pismo.transaction.entity.Account;
 import com.pismo.transaction.exception.ResourceNotFoundException;
+import com.pismo.transaction.repository.AccountRepository;
 import com.pismo.transaction.security.JwtService;
 
 @SpringBootTest
+@Description("Tests for AccountService")
+@ActiveProfiles("test")
 public class AccountServiceTest {
 
     @Mock

@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.pismo.transaction.dto.TransactionDto;
 import com.pismo.transaction.entity.Account;
@@ -24,6 +25,8 @@ import com.pismo.transaction.repository.TrasanctionRepository;
 import jdk.jfr.Description;
 
 @SpringBootTest
+@Description("Tests for TransactionService")
+@ActiveProfiles("test")
 public class TransactionServiceTest {
 
     @Mock
