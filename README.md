@@ -36,9 +36,7 @@ This project is a simple API for managing customer transactions. It includes end
           security.jwt.expiration-time=86400000
 
           # Database Configuration
-          spring.datasource.url=jdbc:postgresql://localhost:5432/<db-name>
-          spring.datasource.username=<your-username>
-          spring.datasource.password=<your-password>
+          spring.datasource.url=postgres://<user>:<password>@db:5432/<database>
           spring.jpa.hibernate.ddl-auto=update
           spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
