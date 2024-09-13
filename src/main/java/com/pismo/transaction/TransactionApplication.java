@@ -4,6 +4,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.pismo.transaction.entity.OperationType;
 import com.pismo.transaction.repository.OperationTypeRepository;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 
 @SpringBootApplication
 @AllArgsConstructor
+@EnableTransactionManagement 
 public class TransactionApplication {
 
 	private final OperationTypeRepository operationTypeRepository;
