@@ -1,5 +1,5 @@
 # Use the official Java 17 image as a base
-FROM maven:3.9.9-amazoncorretto-17
+FROM amazoncorretto:17
 
 # Set the working directory to /app
 WORKDIR /app

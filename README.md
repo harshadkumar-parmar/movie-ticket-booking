@@ -18,37 +18,6 @@ This project is a simple API for managing customer transactions. It includes end
 - Maven
 - Docker
 
-### Run in local with postgresql
-1. <b>Clone the repository </b>:
-    ```bash
-    git clone https://github.com/harsh2792/transaction-service.git
-    cd transactions-service
-    ```
-
-2. <b>Make Scripts Executable</b>: Ensure the run.sh and run-test.sh scripts have execute permissions:
-    ```bash
-    chmod +x run.sh
-    chmod +x run-test.sh
-    ```
-3. <b> Modify Application Properties </b>: Update the application.properties file.:
-    ```bash
-          # JWT Configuration
-          security.jwt.secret-key=<your-secret-key>
-          security.jwt.expiration-time=86400000
-
-          # Database Configuration
-          spring.datasource.url=jdbc:postgresql://<HOST>:5432/<DATABASE>
-          spring.datasource.username=<DB_USERNAME>
-          spring.datasource.password=<DB_PASSWORD>
-    ```
-4. <b> Run the application </b>: Application can be run from mvn or shell script as below: 
-    ```bash
-    mvn spring-boot:run
-    ```
-    or 
-     ```bash
-    sh run.sh
-    ```
 
 ### Run application with Docker compose
 
@@ -57,18 +26,25 @@ This project is a simple API for managing customer transactions. It includes end
     git clone https://github.com/harsh2792/transaction-service.git
     cd transactions-service
     ```
-2. <b>Build the Docker Images</b>: Build the Docker images using the following command:
+ 
+2. <b>Create build using maven </b>:
+
+```bash
+mvn clean package -DskipTests
+```
+
+3. <b>Build the Docker Images</b>: Build the Docker images using the following command:
 ```bash
 docker-compose build
 ```
 
-3. <b>Verify the Services</b>: Verify that the services are running correctly by checking the logs:
+4. <b>Verify the Services</b>: Verify that the services are running correctly by checking the logs:
 
 ```bash
 docker-compose logs
 ```
 
-4. <b>Stop the Services</b>: Stop the services using the following command:
+5. <b>Stop the Services</b>: Stop the services using the following command:
 
 ```bash
 docker-compose down
