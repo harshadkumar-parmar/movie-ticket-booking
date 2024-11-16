@@ -1,1 +1,0 @@
-INSERT INTO account (account_id, email, document_number, name, password) VALUES (1, 'a@b.com', '456789', 'Joe', '$2a$10$OprwX.BT.363BNOwemfO/upDfmonfsjW.u4w0r6tpTO4FZoTaC0S.');

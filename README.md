@@ -52,123 +52,7 @@ docker-compose down
 
 ## Endpoints
 
-### Create an Account
-- **URL:** `/api/accounts/`
-- **Method:** `POST`
-- **Summary:** Account creation
-- **Description:** Register a new user with a password and email
-- **Request Body:**
-    ```json
-    {
-      "document_number": "12345678900",
-      "name": "John Doe",
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
-- **Response Body:**
-    ```json
-    {
-      "account_id": 1,
-      "document_number": "12345678900",
-      "name": "John Doe",
-      "email": "john.doe@example.com"
-    }
-    ```
-
-### Retrieve Account Information
-- **URL:** `/api/accounts/{accountId}`
-- **Method:** `GET`
-- **Summary:** Get account details
-- **Description:** Get account details based on account ID
-- **Parameters:**
-    - `accountId` (path parameter)
-- **Response Body:**
-    ```json
-    {
-      "account_id": 1,
-      "document_number": "12345678900",
-      "name": "John Doe",
-      "email": "john.doe@example.com"
-    }
-    ```
-
-### Account Login
-- **URL:** `/api/accounts/login`
-- **Method:** `POST`
-- **Summary:** Account Login
-- **Description:** Login a user with a password and email
-- **Request Body:**
-    ```json
-    {
-      "email": "john.doe@example.com",
-      "password": "password123"
-    }
-    ```
-
-### Get Current Account
-- **URL:** `/api/accounts/me`
-- **Method:** `GET`
-- **Summary:** Get account details
-- **Description:** Get account details based on account ID
-- **Response Body:**
-    ```json
-    {
-      "account_id": 1,
-      "document_number": "12345678900",
-      "name": "John Doe",
-      "email": "john.doe@example.com"
-    }
-    ```
-
-### Create a Transaction
-- **URL:** `/api/transactions/`
-- **Method:** `POST`
-- **Summary:** Create a transaction
-- **Description:** Create a new transaction for an account
-- **Request Body:**
-    ```json
-    {
-      "account_id": 1,
-      "operation_type_id": 4,
-      "amount": 123.45
-    }
-    ```
-- **Response Body:**
-    ```json
-    {
-      "transaction_id": 1,
-      "account_id": 1,
-      "operation_type_id": 4,
-      "amount": 123.45,
-      "event_date": "2024-09-01T14:00:34"
-    }
-    ```
-
-### Get Transactions
-- **URL:** `/api/transactions/`
-- **Method:** `GET`
-- **Summary:** Get transactions
-- **Description:** Retrieve all transactions
-- **Response Body:**
-    ```json
-    [
-      {
-        "transaction_id": 1,
-        "account_id": 1,
-        "operation_type_id": 4,
-        "amount": 123.45,
-        "event_date": "2024-09-01T14:00:34"
-      },
-      {
-        "transaction_id": 2,
-        "account_id": 1,
-        "operation_type_id": 1,
-        "amount": -50.0,
-        "event_date": "2024-09-01T14:00:34"
-      }
-    ]
-    ```
+TODO: Endpoint details
 
 ## Unit Tests
 
@@ -192,8 +76,6 @@ or can use run-test.sh file to test and generate reports
 sh ./run-test.sh
 ```
 
-![jococo report](https://github.com/harsh2792/transaction-service/blob/master/images/transaction-report.png?raw=true)
-
 
 ## Swagger API Documentation
 
@@ -207,37 +89,110 @@ http://localhost:8080/swagger-ui.html
 
 ```
 
-![Swagger UI](https://github.com/harsh2792/transaction-service/blob/master/images/swagger-ui.png?raw=true)
-
 ## Security Configuration
 The application includes security configurations for authentication and authorization. Ensure you have the necessary credentials to access the endpoints.
 
 ## Database Structure
 
 ```mermaid
-erDiagram
-    ACCOUNT {
-        Long account_id PK
-        String document_number
-        String name
-        String email
-        String password
+    erDiagram
+
+    CUSTOMER {
+        bigint id PK
+        varchar email
+        varchar mobile_number
+        varchar name
+        varchar password
     }
-    OPERATION_TYPE {
-        short operation_type_id PK
-        String description
-        boolean is_negative
+    
+    MOVIE {
+        bigint id PK
+        varchar description
+        varchar director
+        int duration
+        varchar[] genre
+        varchar[] languages
+        varchar poster_url
+        varchar release_date
+        varchar title
+        varchar trailer_url
     }
+    
+    THEATER {
+        bigint id PK
+        varchar address
+        varchar city
+        varchar email
+        double latitude
+        double longitude
+        varchar name
+        varchar phone_number
+        varchar state
+        varchar zip
+    }
+    
+    SCREEN {
+        bigint id PK
+        varchar name
+        int seat_count
+        bigint theater_id FK
+    }
+    
+    SEAT {
+        bigint id PK
+        int row
+        varchar seat_number
+        varchar seat_type
+        bigint screen_id FK
+    }
+    
+    SHOWTIME {
+        bigint id PK
+        timestamp endtime
+        varchar language
+        timestamp showtime
+        bigint movie_id FK
+        bigint screen_id FK
+        bigint theater_id FK
+    }
+    
+    BOOKING {
+        bigint id PK
+        timestamp booking_date
+        varchar booking_status
+        double discount_amount
+        varchar payment_status
+        double tax_amount
+        double total_amount
+        bigint customer_id FK
+        bigint showtime_id FK
+    }
+    
+    SEAT_RESERVATION {
+        bigint id PK
+        timestamp reservation_date
+        boolean reserved
+        bigint booking_id FK
+        bigint seat_id FK
+    }
+    
     TRANSACTION {
-        Long transaction_id PK
-        Long account_id FK
-        short operation_type_id FK
-        BigDecimal amount
-        LocalDateTime event_date
+        bigint transaction_id PK
+        numeric amount
+        timestamp event_date
+        bigint account_id FK
     }
 
-    ACCOUNT ||--o{ TRANSACTION : has
-    OPERATION_TYPE ||--o{ TRANSACTION : has
+    CUSTOMER ||--o{ BOOKING : "has many"
+    CUSTOMER ||--o{ TRANSACTION : "has many"
+    BOOKING ||--o{ SEAT_RESERVATION : "contains"
+    BOOKING }o--|| SHOWTIME : "for"
+    SEAT_RESERVATION }o--|| SEAT : "assigned"
+    SCREEN ||--o{ SEAT : "contains"
+    THEATER ||--o{ SCREEN : "has many"
+    SHOWTIME }o--|| MOVIE : "for"
+    SHOWTIME }o--|| SCREEN : "shown on"
+    SHOWTIME }o--|| THEATER : "in"
 
 ```
 
@@ -249,7 +204,109 @@ mvn dependency-check:check
 
 ```
 the OWASP Dependency-Check report
-![Owasp Depedenct Report](https://github.com/harsh2792/transaction-service/blob/master/images/owasp-depedency-check-report.png?raw=true)
+
+
+## Diagrams
+
+### Flowcharts
+
+```mermaid
+
+
+flowchart TD
+    Start([Start])
+    SelectShowSeat([User Selects Show and Seat])
+    CheckAvailability{"Check Seat Availability in Redis"}
+    IsSeatAvailable{"Is Seat Available?"}
+    ReserveSeat([Reserve Seat Temporarily in Redis - TTL])
+    ErrorMessage([Show Error Message])
+    ConfirmPrompt([Display Reservation Confirmation Prompt to User])
+    ConfirmBooking{"Does User Confirm Booking in Time?"}
+    FinalizeBooking([Confirm Booking and Mark Seat as Booked in Redis])
+    ReleaseAfterTTL([Release Seat After TTL Expiration])
+    End([End])
+
+    Start --> SelectShowSeat
+    SelectShowSeat --> CheckAvailability
+    CheckAvailability --> IsSeatAvailable
+    IsSeatAvailable -- Yes --> ReserveSeat
+    IsSeatAvailable -- No --> ErrorMessage
+    ReserveSeat --> ConfirmPrompt
+    ConfirmPrompt --> ConfirmBooking
+    ConfirmBooking -- Yes --> FinalizeBooking
+    ConfirmBooking -- No --> ReleaseAfterTTL
+    FinalizeBooking --> End
+    ReleaseAfterTTL --> End
+
+```
+
+### System Architecture
+
+```mermaid
+
+graph TD;
+    Client-->LoadBalancer;
+    LoadBalancer-->EKS;
+    EKS-->BookingService;
+    EKS-->SearchService;
+    EKS-->RecommendationEngine;
+    EKS-->ElasticSearch;
+    EKS-->Redis;
+    EKS-->ObjectStore;
+    BookingService-->RDSMaster;
+    PaymentService-->RDSMaster;
+    TransactionService-->RDSMaster;
+    RDSMaster-->RDSReplica;
+    SearchService-->ElasticSearch;
+    RecommendationEngine-->MLModel;
+    Monitoring-->EKS;
+    Tracing-->EKS;
+    
+    subgraph EKS
+        BookingService
+        SearchService
+        RecommendationEngine
+        ElasticSearch
+        Redis
+        ObjectStore
+    end
+    
+    subgraph RDS
+        RDSMaster
+        RDSReplica
+    end
+    
+    subgraph ElasticSearch
+        MovieIndex
+        TheaterIndex
+    end
+    
+    subgraph MLModel
+        RecommendationModel
+    end
+    
+    subgraph Monitoring
+        Prometheus
+        Grafana
+    end
+    
+    subgraph Tracing
+        Jaeger
+        Zipkin
+    end
+    
+    subgraph Redis
+        Cache
+    end
+    
+    subgraph ObjectStore
+        StaticFiles
+        Videos
+    end
+
+
+```
 
 ## Contact
 If you have any questions, feel free to reach out.
+

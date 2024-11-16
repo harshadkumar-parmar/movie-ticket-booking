@@ -6,19 +6,19 @@ services:
     depends_on:
       - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/pismo-demo2
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/demo
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
-      - pismo-demo-network
+      - demo-network
 
   adminer:
     image: adminer
     ports:
       - "8081:8080"
     networks:
-      - pismo-demo-network
+      - demo-network
 
   db:
     image: postgres
@@ -26,15 +26,15 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=pismo-demo2
+      - POSTGRES_DB=demo
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
-      - pismo-demo-network
+      - demo-network
 volumes:
   db-data:
 
 networks:
-  pismo-demo-network:
+  demo-network:
