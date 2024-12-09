@@ -1,9 +1,12 @@
-# Movie ticket
+# Movie Ticket Booking System
 
-This project is a simple API for managing customer transactions. It includes endpoints for creating accounts and transactions, and retrieving account information. The project is built using Java and Spring Boot.
+## Overview
+
+This project is a movie ticket booking system built with Spring Boot, JPA, and Redis for synchronization and locking. It allows users to book multiple seats for a movie showtime, ensuring concurrency and consistency in a distributed environment.
 
 ## Table of Contents
-- Getting Started
+- Features
+- Technologies Used
 - Endpoints
 - Running Tests
 - Swagger API Documentation
@@ -11,11 +14,28 @@ This project is a simple API for managing customer transactions. It includes end
 - Database Structure
 - Depedency Report
 
-## Getting Started
+## Features
 
-### Prerequisites
-- Java 17 or higher
+- Book multiple seats for a movie showtime
+- Concurrent seat reservation with Redis distributed locks
+- Release expired seat reservations
+- Confirm seat reservations
+- Find theaters by movie ID and show date
+
+## Technologies Used
+
+- Spring Boot
+- Spring Data JPA
+- Redisson (Redis-based distributed locks)
+- Postgresql (for development and testing)
+- Maven (for dependency management)
+
+## Prerequisites
+
+- JDK 17
 - Maven
+- Redis server (running on localhost:6379)
+- Postgresql
 - Docker
 
 
