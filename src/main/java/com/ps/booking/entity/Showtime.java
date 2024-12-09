@@ -1,5 +1,6 @@
 package com.ps.booking.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -18,6 +19,8 @@ public class Showtime {
 
     private LocalDateTime showtime;
     private LocalDateTime endtime;
+    private LocalDate showdate;
+
     private String language;
 
     @ManyToOne

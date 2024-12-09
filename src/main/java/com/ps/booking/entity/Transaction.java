@@ -26,7 +26,7 @@ public class Transaction {
     private Long transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable=false)
+    @JoinColumn(name = "customer", nullable=false)
     private Customer customer;
 
     private BigDecimal amount;

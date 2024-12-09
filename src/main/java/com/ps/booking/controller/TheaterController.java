@@ -1,5 +1,6 @@
 package com.ps.booking.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +42,13 @@ public class TheaterController {
             @RequestParam("city") String city,
             @RequestParam("lat") Double lat,
             @RequestParam("long") Double lon,
-            @RequestParam("date") String chosenDate) {
+            @RequestParam("date") LocalDate chosenDate) {
         List<Theater> theaters = theaterRepository.findByCity(city);
 
         List<TheaterWithShowtimesDto> theaterWithShowtimesDtos = new ArrayList<>();
 
         for (Theater theater : theaters) {
-            List<Showtime> showtimes = showtimeRepository.findByTheaterAndShowDate(theater,chosenDate);
+            List<Showtime> showtimes = showtimeRepository.findByTheaterAndShowdate(theater,chosenDate);
             if (!showtimes.isEmpty()) {
                 TheaterWithShowtimesDto theaterWithShowtimesDto = new TheaterWithShowtimesDto(theater);
                 theaterWithShowtimesDto.setShowtimes(showtimes);

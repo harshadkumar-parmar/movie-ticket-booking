@@ -6,25 +6,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ps.booking.service.RedisService;
+import com.ps.booking.dto.BookingDTO;
+import com.ps.booking.entity.Booking;
+import com.ps.booking.service.BookingService;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/bookings")
 public class BookingController {
 
     @Autowired
-    private RedisService redisService;
+    private BookingService bookingService;
 
-    private static final long RESERVATION_TTL = 60 * 15; // 5 minutes TTL for seat hold and will change to admin configure in future
+    @PostMapping("/reserve")
+    public Booking reserveSeats(@RequestParam String userId, @RequestBody BookingDTO bookingDTO) throws Exception {
+        Booking booking = bookingService.reserveSeats(userId, bookingDTO);
+        return booking;
+    }
 
-    @PostMapping("/")
-    public String reserveSeat(@RequestParam String showId, @RequestParam Long[] seatNumbers) {
-
-        if (redisService.areSeatsHold(showId, seatNumbers)) {
-            return "Seat is already booked.";
-        }
-        redisService.holdSeats(showId, seatNumbers, RESERVATION_TTL);
-        return "Seat reserved successfully.";
+    @PostMapping("/confirm")
+    public void confirmSeats(@RequestParam String userId, @RequestParam Long bookingId) throws Exception {
+        bookingService.confirmSeats(userId, bookingId);
     }
 }

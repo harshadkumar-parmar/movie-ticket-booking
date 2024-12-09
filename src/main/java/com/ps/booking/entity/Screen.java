@@ -20,7 +20,6 @@ public class Screen {
     private String name;
     private int seatCount;
 
-
     @ManyToOne
     private Theater theater;
 

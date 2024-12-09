@@ -27,9 +27,9 @@ public class ShowController {
     }    
 
     
-    @GetMapping("/movies")
+    @GetMapping("/")
     public ResponseEntity<List<Showtime>> getShowsWithMovie(@RequestParam Long[] theaterIds, @RequestParam Long movieId, @RequestParam LocalDate date) {
         List<Showtime> shows = showService.findShowsWithMovie(theaterIds, date, movieId);
         return ResponseEntity.ok(shows);
-    }    
+    }
 }

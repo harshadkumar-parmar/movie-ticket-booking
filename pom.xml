@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ps</groupId>
-    <artifactId>transaction</artifactId>
+    <artifactId>booking</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>booking</name>
     <description>Movie Booking project for Spring Boot</description>
@@ -109,6 +109,12 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.40.0</version>
         </dependency>
     </dependencies>
 

@@ -24,5 +24,6 @@ public class SeatReservation {
 
     private LocalDateTime reservationDate;
     private boolean reserved;
-
+    private boolean confirmed;
+    private LocalDateTime expirationTime;
 }

@@ -24,8 +24,6 @@ public class ShowService {
     }
 
     public List<Showtime> findShowsWithMovie(Long[] theaterIds, LocalDate date, Long movieId) {
-        LocalDateTime startOfDay = date.atStartOfDay();
-        LocalDateTime endOfDay = date.plusDays(1).atStartOfDay();
-        return showRepository.findByTheaterIdInAndMovieIdAndShowtimeBetween(theaterIds, movieId, startOfDay, endOfDay);
+        return showRepository.findByTheaterIdInAndMovieIdAndShowdate(theaterIds, movieId, date);
     }
 }

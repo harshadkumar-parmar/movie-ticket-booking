@@ -151,6 +151,7 @@ The application includes security configurations for authentication and authoriz
         timestamp endtime
         varchar language
         timestamp showtime
+        timestamp showdate
         bigint movie_id FK
         bigint screen_id FK
         bigint theater_id FK
@@ -253,6 +254,11 @@ graph TD;
     EKS-->ElasticSearch;
     EKS-->Redis;
     EKS-->ObjectStore;
+    EKS-->PaymentService;
+    EKS-->TransactionService;
+    BookingService-->Redis;
+    PaymentService-->Redis;
+    TransactionService-->Redis;
     BookingService-->RDSMaster;
     PaymentService-->RDSMaster;
     TransactionService-->RDSMaster;
@@ -264,11 +270,14 @@ graph TD;
     
     subgraph EKS
         BookingService
+        PaymentService
+        TransactionService
         SearchService
         RecommendationEngine
         ElasticSearch
         Redis
-        ObjectStore
+        Monitoring
+        Tracing
     end
     
     subgraph RDS
@@ -297,6 +306,7 @@ graph TD;
     
     subgraph Redis
         Cache
+        RedisLock
     end
     
     subgraph ObjectStore
