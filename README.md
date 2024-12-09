@@ -1,4 +1,4 @@
-# Transactions API
+# Movie ticket
 
 This project is a simple API for managing customer transactions. It includes endpoints for creating accounts and transactions, and retrieving account information. The project is built using Java and Spring Boot.
 
