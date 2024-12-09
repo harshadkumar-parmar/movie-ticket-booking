@@ -43,8 +43,8 @@ This project is a movie ticket booking system built with Spring Boot, JPA, and R
 
 1. <b>Clone the repository </b>:
     ```bash
-    git clone https://github.com/harsh2792/transaction-service.git
-    cd transactions-service
+    git clone https://github.com/harsh2792/movie-ticket-booking.git
+    cd movie-ticket-booking
     ```
  
 2. <b>Create build using maven </b>:
