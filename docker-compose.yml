@@ -33,6 +33,12 @@ services:
       - "5432:5432"
     networks:
       - demo-network
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - demo-network
 volumes:
   db-data:
 

@@ -13,7 +13,6 @@ import com.ps.booking.dto.BookingDTO;
 import com.ps.booking.entity.Booking;
 import com.ps.booking.entity.BookingStatus;
 import com.ps.booking.entity.Customer;
-import com.ps.booking.entity.Seat;
 import com.ps.booking.entity.SeatReservation;
 import com.ps.booking.entity.Showtime;
 import com.ps.booking.repository.BookingRepository;
